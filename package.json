@@ -1,0 +1,27 @@
+{
+  "name": "hivejs",
+  "version": "0.0.0",
+  "description": "Collaborating: Snap.",
+  "main": "index.js",
+  "dependencies": {
+    "architect": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hive",
+    "collaborate",
+    "together",
+    "collaborative",
+    "editing",
+    "editor",
+    "etherpad",
+    "shareJS",
+    "ot",
+    "operational",
+    "transformation"
+  ],
+  "author": "Marcel Klehr <mklehr@gmx.net>",
+  "license": "MIT"
+}
