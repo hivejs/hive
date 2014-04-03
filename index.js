@@ -1,12 +1,18 @@
-module.exports = setup
-module.exports.consumes = ['cli']
+var co = require('co')
 
-function setup(plugin, imports, register) {
+module.exports = setup
+module.exports.consumes = ['cli', 'hooks']
+
+function setup(plugin, imports, next) {
   var cli = imports.cli
+    , hooks = imports.hooks
   
-  cli.registerCommand('', function(argv) {
-    
+  cli.registerCommand('', function (argv) {
+    // call hook: main
+    co(hooks.callHook)('hive:main', function(err) {
+      if(err) throw err
+    })
   })
   
-  register()
+  next()
 }

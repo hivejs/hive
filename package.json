@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "architect": "*"
+  , "co": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
