@@ -1,3 +1,6 @@
+/**
+ * This is the hive main component, responsible for kicking off everything.
+ */
 var co = require('co')
 
 module.exports = setup
