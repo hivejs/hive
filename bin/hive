@@ -1,4 +1,4 @@
-
+#!/usr/bin/env node
 /**
  * This is the main hive binary
  */
@@ -7,15 +7,15 @@ var architect = require('architect')
   , globalCommand = require('../lib/globalCommand') 
 
 
+var bin
 
-if(process.argv[2] && globalCommand.exists(process.argv[2])) {
+if(process.argv[2] && (bin = globalCommand.exists(process.argv[2]))) {
 
   // launch a helper command
 
-  globalCommand.run(process.argv[2], process.argv.slice(3))
-    .on('close', function(code){
-      process.exit(code);
-    })
+  globalCommand.run(bin, process.argv.slice(3), function(code) {
+    process.exit(code)
+  })
   
 
 } else {

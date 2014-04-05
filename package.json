@@ -6,9 +6,15 @@
   "dependencies": {
     "architect": "*"
   , "co": "*"
+  , "co-prompt": "*"
+  , "win-fork": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "hive": "bin/hive",
+    "hive-init": "bin/hive-init"
   },
   "keywords": [
     "hive",
