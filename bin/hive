@@ -2,8 +2,7 @@
 /**
  * This is the main hive binary
  */
-var architect = require('architect')
-  , findComponents = require('../lib/findComponents') 
+var hive = require('../')
   , globalCommand = require('../lib/globalCommand') 
 
 
@@ -22,14 +21,9 @@ if(process.argv[2] && (bin = globalCommand.exists(process.argv[2]))) {
 
   // Spin up the architect app
 
-  var componentDir, components
-  componentDir = process.cwd()+'/node_modules'
-  components = findComponents(componentDir)
-
-  architect
-    .createApp(components, function(er, app) {
-         if(er) throw er
-         app.getService('cli').dispatch(process.argv)
-    })
+  hive.load(process.cwd(), function(er, app) {
+    if(er) throw er
+    app.getService('cli').dispatch(process.argv)
+  })
 
 }

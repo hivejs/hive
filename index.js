@@ -19,3 +19,15 @@ function setup(plugin, imports, next) {
   
   next()
 }
+
+
+var architect = require('architect')
+  , findComponents = require('./lib/findComponents')
+
+module.exports.load = function(dir, cb) {
+  var componentDir, components
+  componentDir = dir+'/node_modules'
+  components = findComponents(componentDir)
+
+  architect.createApp(components, cb)
+}
