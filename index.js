@@ -1,25 +1,6 @@
 /**
- * This is the hive main component, responsible for kicking off everything.
+ * This is the hive node.js API, it allows you to start hive from inside another node app.
  */
-var co = require('co')
-
-module.exports = setup
-module.exports.consumes = ['cli', 'hooks']
-
-function setup(plugin, imports, next) {
-  var cli = imports.cli
-    , hooks = imports.hooks
-  
-  cli.registerCommand('', function (argv) {
-    // call hook: main
-    co(hooks.callHook)('hive:main', function(err) {
-      if(err) throw err
-    })
-  })
-  
-  next()
-}
-
 
 var architect = require('architect')
   , findComponents = require('./lib/findComponents')
