@@ -5,6 +5,10 @@
 var architect = require('architect')
   , findComponents = require('./lib/findComponents')
 
+/**
+ * @param dir {String} The hive instance directory to use
+ * @param cb {Function} (err, architectApp)
+ */
 module.exports.load = function(dir, cb) {
   var componentDir, components
   componentDir = dir+'/node_modules'
