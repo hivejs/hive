@@ -29,8 +29,7 @@ co(function *() {
   , version: '0.0.0'
   , description: yield prompt(indent+'Instance description: ')
   , dependencies: {
-      'hivejs': '*'
-    , 'hive-config': '*'
+      'hive-config': '*'
     , 'hive-cli': '*'
     , 'hive-hooks': '*'
     , 'hive-services': '*'
