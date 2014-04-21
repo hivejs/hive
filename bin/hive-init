@@ -35,6 +35,9 @@ co(function *() {
     , 'hive-services': '*'
     , 'hive-worker-pool': '*'
     , 'hive-worker': '*'
+    , 'hive-orm': '*'
+    , 'hive-model': '*'
+    , 'hive-http': '*'
     }
   , private: true
   , hive: true
@@ -58,7 +61,7 @@ co(function *() {
   })
 
   if(exitCode != 0) {
-    console.log('\n'+indent+'Mh. npm seems to have failed. You\'ll have to install the component yourself.')
+    console.log('\n'+indent+'Mh. npm seems to have failed. You\'ll have to install the components yourself.')
   }else {
     console.log(indent+'✔')
   }
