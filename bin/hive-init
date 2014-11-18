@@ -11,19 +11,19 @@ var co = require('co')
 
 co(function *() {
   var indent = '  '
-  
+
   if(isExistingInstance()) {
     console.log('There is already a hive instance in this directory.')
     return
   }
-  
-  
+
+
   console.log('Mission: Set up your hive instance.')
   console.log('Details: 1) Create package.json, 2) Install hive components, 3) Set up config files.')
-  
-  
+
+
   console.log('\n1) Create package.json')
-  
+
   var packageJson = {
     name: yield prompt(indent+'Instance name: ')
   , version: '0.0.0'
@@ -42,17 +42,17 @@ co(function *() {
   , private: true
   , hive: true
   }
-  
+
   console.log(indent+'Writing package.json...')
   fs.writeFileSync(process.cwd()+'/package.json', JSON.stringify(packageJson, null, '  '))
-  
+
   console.log(indent+'✔')
-  
-  
+
+
   console.log('\n2) Install hive components')
-  
+
   console.log(indent+'installing the following components...\n', packageJson.dependencies)
-  
+
   var exitCode = yield spawn('npm', ['update', '--loglevel=warn'], {
     stdio: 'inherit'
   , cwd: process.cwd()
@@ -65,8 +65,8 @@ co(function *() {
   }else {
     console.log(indent+'✔')
   }
-  
-  
+
+
   console.log('\n3) Set up config files')
 
   var configdir = process.cwd()+'/config'
@@ -76,10 +76,10 @@ co(function *() {
       fs.writeFileSync(configdir+'/'+env+'.json', '{\n}')
       console.log(indent+'- config/'+env+'.json')
     })
-  
+
   console.log(indent+'✔')
-  
-  
+
+
   console.log('\nMission complete.')
 })(function(er) {
   if(er) throw er;
