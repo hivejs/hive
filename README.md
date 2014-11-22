@@ -1,10 +1,138 @@
 # hive.js
 
-Every `hive-<component>` usually registers a provider that can be consumed by other components.
-One component can register multiple providers.
+## hivejs
+
+### The hive command
+`hivejs` is intended to be installed globally as a command.
+It will allow you to call any global command named `hive-mycommand` via `hive mycommand`.
+
+If no such command can be found, the hive binary will bootstrap the component system using the
+current working directory as a *hive instance directory* from where it will try to load
+installed hive components.
+
+Note that components can extend the hive cli, too. Their subcommands will be available
+in the context of the current instance.
+
+### Require'ing hive in your application
+`hivejs` also provides an API that allows you to access and start your hive instance in a different node application.
+
+```js
+var hive = require('hivejs')
+
+hive.load(pathToHiveDir, function(err, app) {
+  if(er) throw err
+})
+```
+
+## What is a hive instance?
+Similar to a git repository, a hive instance is simply a folder where your instance lives:
+code, configuration and any other stuff you might want to add all in one place.
+
+```
+your-hive-instance/
++-node_modules/
+  +-components..
++-config/
+  +-development.json
+  +-test.json
+  +-production.json
++-package.json
+```
+
+#### Components
+The hive code base is organized in components that live in `your-hive-instance/node_modules/` and
+are conveniently managed via `your-hive-instance/package.json` as you would expect from a node project.
+
+#### Config
+Configuration files are stored in `your-hive-instance/config/` as `development.json`, `test.json` and `production.json`.
+
+#### hive-init
+Running `hive-init(1)` will briefly guide you through the set-up of your hive instance dir, installing
+the standard components as well as creating the necessary config files.
+
+
+## What are components?
+Everything you would like to add to hive is going to be wrapped in a component.
+
+A `hive-<component>` can register a *provider* and can consume providers by other components.
 A provider can do stuff for you, e.g. an auth provider can do authentication.
 
-Peripheral or expensive tasks can be outsourced into a service.
-Services register with the services provider.
-Services can be started internally or externally (in a separate process; default).
-The services provider runs a controller instance that manages the various services by having them connect to a control port.
+Application tasks (e.g. http, worker-pool, etc.) are encapsuled as *services*.
+The beauty of services is that they can be started internally in the main
+process or externally in a separate process. You can register your services with
+the services provider.
+
+Note that hive doesn't implement a way to re-start specific services since this
+would require assumptions that would limit your choices about the set-up and
+architecture of your instance.
+
+Usually a component is either a *provider* or a *service*, although in rare cases it might be both, e.g. the http component is a kind of registry provider
+while encapsuling the actual http server in a service.
+
+## Parts of hive
+
+### Standard providers
+ * hooks -- allows registration and emission of hooks
+ * logger -- provides logging functionality
+ * config -- loads and provides the configuration
+ * cli -- register your subcommands here
+ * services -- register your services here
+ * queue(memory/redis) -- DuplexStream that allows FIFO queuing of pending edits
+ * broadcast -- DuplexStream that allows FIFO broadcasting of new changes
+ * http -- a koa.js instance
+ * orm -- Emits the orm:initialize hook to allow adding model
+ * auth -- Allows registration of auth providers (per auth method)
+
+### Standard services
+ * http
+ * http-api
+ * worker -- the worker service
+ * worker-pool -- a service that manages all the workers
+
+### Standard commands
+ * hivejs -- main binary
+ * hive-init -- easily set-up your hive instance
+
+### Other standard components
+ * model -- registers the built-in data models
+
+## Todo
+ * Pass on Waterline's per-model lifecycle callbacks through hooks?
+ * hive-init(1): default config files are empty :/ -- Perhaps allow components to register defaults that are used by hive-init to populate the files (wouldn't allow for commens though...)
+ * how should client-side js be built? (=> https://github.com/component/koa.js)
+ * Authentication can be done with JWT (json web tokens: http://blog.auth0.com/2014/01/07/angularjs-authentication-with-cookies-vs-token/)
+ * Streaming http API? twitter's done this already: https://dev.twitter.com/docs/streaming-apis/connecting#User_Agent -- you can also poll their servers though: https://dev.twitter.com/docs/api/1.1/get/statuses/mentions_timeline
+ * Logging: logstash seems cool for collecting logs. http://cookbook.logstash.net/recipes/logging-from-nodejs/ (There's prolly also a log4js appender for logstash)
+ * Add [jstrace](https://github.com/jstrace/jstrace) probes
+ * what about metrics? node-measured, https://github.com/square/cube , might make sense to abstract all this in a stats collecting provider
+
+
+
+
+## Provider interfaces, delegators, the hooks provider -- when to use what?
+When the time has come and you want to outsource some of your functionality, you have the choice between provider interfaces, delegators and the global hooks provider. Now, which do you use?
+
+### Provider interface
+If your component depends on the functionality of the outsourced code, e.g. you need its return value, then that's a clear sign that you need to define an interface that an external provider will implement.
+
+### Delegator
+If you want to be able to plug in more than one component (e.g. different authentication providers should be supported), you can create a provider that allows to register delegates, and calls out to the delegates to execute the task or provide the requested functionality  for it, combining their output if necessary.
+
+An example for a delegating provider is the auth provider defined by Hive core: Authentication providers are to be named `auth-` and register with the auth provider *providing* an authentication method.
+
+#### Hooking
+If your component does not directly depend on the functionality of outsourced parts, use the hook system -- just call a hook with a few arguments and be done with it.
+
+The difference between a hook and an event listener is that you will want to wait for the hook to finish executing, while with events it's just "fire and forget".
+
+
+## Handling Auth
+Let's assume there is a registered authentication provider called `auth-facebook` providing an authentication method called `facebook`.
+The various hive interfaces (e.g. REST, gulf, tcp, etc.) are responsible for handling user sessions. Each submitted action must be successfully authenticated and authorized.
+
+Suggestion:
+There should be a special action solely for the purpose of authentication that returns a token that may be used as a simplified authentication method for future requests.
+
+
+## Workers
+The _worker-pool_ service sets up an rpc endpoint which _workers_ connect to. If the worker pool finds out about a document that has pending edits it assigns it to a worker. The newly assigned worker then processes all pending edits for this document.
