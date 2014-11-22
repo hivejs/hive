@@ -36,8 +36,9 @@ co(function *() {
     , 'hive-worker-pool': '*'
     , 'hive-worker': '*'
     , 'hive-orm': '*'
-    , 'hive-model': '*'
+    , 'hive-models': '*'
     , 'hive-http': '*'
+    , 'hive-rest-api': '*'
     }
   , private: true
   , hive: true
