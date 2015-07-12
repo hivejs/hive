@@ -132,7 +132,3 @@ The various hive interfaces (e.g. REST, gulf, tcp, etc.) are responsible for han
 
 Suggestion:
 There should be a special action solely for the purpose of authentication that returns a token that may be used as a simplified authentication method for future requests.
-
-
-## Workers
-The _worker-pool_ service sets up an rpc endpoint which _workers_ connect to. If the worker pool finds out about a document that has pending edits it assigns it to a worker. The newly assigned worker then processes all pending edits for this document.
