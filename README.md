@@ -72,29 +72,29 @@ while encapsuling the actual http server in a service.
 ## Parts of hive
 
 ### Standard providers
- * hooks -- allows registration and emission of hooks
- * logger -- provides logging functionality
- * config -- loads and provides the configuration
- * cli -- register your subcommands here
- * services -- register your services here
- * queue(memory/redis) -- DuplexStream that allows FIFO queuing of pending edits
- * broadcast -- DuplexStream that allows FIFO broadcasting of new changes
- * http -- a koa.js instance
- * orm -- Emits the orm:initialize hook to allow adding model
- * auth -- Allows registration of auth providers (per auth method)
+ * [hooks](https://github.com/hivejs/hive-hooks) -- allows registration and emission of hooks
+ * [logger](https://github.com/hivejs/hive-logger) -- provides logging functionality
+ * [config](https://github.com/hivejs/hive-config) -- loads and provides the configuration
+ * [cli](https://github.com/hivejs/hive-cli) -- register your subcommands here
+ * [services](https://github.com/hivejs/hive-services) -- register your services here
+ * broadcast (impl. by [memory](https://github.com/hivejs/hive-broadcast-memory)) -- DuplexStream that allows FIFO broadcasting of new changes
+ * [http](https://github.com/hivejs/hive-http) -- a koa.js instance
+ * [orm](https://github.com/hivejs/hive-orm) -- Sets up the orm (waterline) and emits the orm:initialize hook to allow tweaking of settings
+ * [auth](https://github.com/hivejs/hive-auth) -- Allows registration of auth providers (per auth method)
 
 ### Standard services
- * http
- * http-api
- * worker -- the worker service
- * worker-pool -- a service that manages all the workers
+ * [http](https://github.com/hivejs/hive-http)
+ * [queue](https://github.com/hivejs/hive-queue) -- a semaphore that tells each worker when it's turn has come to commit changes
 
 ### Standard commands
- * hivejs -- main binary
- * hive-init -- easily set-up your hive instance
+ * [hive(1)](https://github.com/hivejs/hive) -- main binary
+ * hive-init(1) -- easily set-up your hive instance
 
 ### Other standard components
- * model -- registers the built-in data models
+ * [models](https://github.com/hivejs/hive-models) -- registers the built-in data models and emits models:load and models:loaded to allow addition and tweaking of models
+
+### Libraries
+ * [api-client](https://github.com/hivejs/api-client) -- a consumer of hive-rest-api, complete with [gulf](http://github.com/marcelklehr/gulf) link factory
 
 ## Todo
  * Pass on Waterline's per-model lifecycle callbacks through hooks?
