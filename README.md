@@ -111,12 +111,12 @@ while encapsuling the actual http server in a service.
         [  (Auth)------]---> [Plugins]
          |     |     ^       [       ]
          v     v     |       [       ]
-     [Model] [  Sync |] ---> [       ]
-             ^    |  |
-             |    |  |
-    ---------|----|--|-----------
-             v    v  |
-         [Queue] [Broadcast]
+    [Model] [  Sync  |] ---> [       ]
+     |       ^    |  |
+     |       |    |  |
+    -|-------|----|--|-----------
+     v       v    v  |
+   [DB] [Queue] [Broadcast]
 
 ```
 
