@@ -81,9 +81,13 @@ while encapsuling the actual http server in a service.
  * [http](https://github.com/hivejs/hive-http) -- a koa.js instance
  * [orm](https://github.com/hivejs/hive-orm) -- Sets up the orm (waterline) and emits the orm:initialize hook to allow tweaking of settings
  * [auth](https://github.com/hivejs/hive-auth) -- Allows registration of auth providers (per auth method)
+ * [ot](https://github.com/hivejs/hive-ot) -- Allows registration of ot types
+ * [assets](https://github.com/hivejs/hive-assets) -- Allows registration of directories with static files and client-side components
+ * [sync](https://github.com/hivejs/hive-sync) -- Manages gulf Documents
+ * [auth](https://github.com/hivejs/hive-auth) -- Allows registration of authentication methods and authorization implementations
 
 ### Standard services
- * [http](https://github.com/hivejs/hive-http)
+ * [http](https://github.com/hivejs/hive-http) -- the http server
  * [queue](https://github.com/hivejs/hive-queue) -- a semaphore that tells each worker when it's turn has come to commit changes
 
 ### Standard commands
@@ -92,14 +96,36 @@ while encapsuling the actual http server in a service.
 
 ### Other standard components
  * [models](https://github.com/hivejs/hive-models) -- registers the built-in data models and emits models:load and models:loaded to allow addition and tweaking of models
+ * [rest-api](https://github.com/hivejs/hive-models) -- registers the REST API, which is the stadard hive interface (one way to interface with hive in your app)
 
 ### Libraries
  * [api-client](https://github.com/hivejs/api-client) -- a consumer of hive-rest-api, complete with [gulf](http://github.com/marcelklehr/gulf) link factory
 
+## Architecture
+```
+          Clients
+           |   ^
+   --------|---|-------------------
+           v   |
+        [  Interfaces  ]---> [       ]
+        [  (Auth)------]---> [Plugins]
+         |     |     ^       [       ]
+         v     v     |       [       ]
+     [Model] [  Sync |] ---> [       ]
+             ^    |  |
+             |    |  |
+    ---------|----|--|-----------
+             v    v  |
+         [Queue] [Broadcast]
+
+```
+
+## Client-side
+A component can register files to be loaded by the client-side loader with the assets provider. (Don't worry, hive-assets is a noop on the client-side, so simple components will work there, too.)
+
 ## Todo
  * Pass on Waterline's per-model lifecycle callbacks through hooks?
  * hive-init(1): default config files are empty :/ -- Perhaps allow components to register defaults that are used by hive-init to populate the files (wouldn't allow for commens though...)
- * how should client-side js be built? (=> https://github.com/component/koa.js)
  * Authentication can be done with JWT (json web tokens: http://blog.auth0.com/2014/01/07/angularjs-authentication-with-cookies-vs-token/)
  * Streaming http API? twitter's done this already: https://dev.twitter.com/docs/streaming-apis/connecting#User_Agent -- you can also poll their servers though: https://dev.twitter.com/docs/api/1.1/get/statuses/mentions_timeline
  * Logging: logstash seems cool for collecting logs. http://cookbook.logstash.net/recipes/logging-from-nodejs/ (There's prolly also a log4js appender for logstash)
