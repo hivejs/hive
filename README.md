@@ -71,13 +71,13 @@ while encapsuling the actual http server in a service.
 
 ## Parts of hive
 
-### Standard providers
+### Standard server-side providers
  * [hooks](https://github.com/hivejs/hive-hooks) -- allows registration and emission of hooks
  * [logger](https://github.com/hivejs/hive-logger) -- provides logging functionality
  * [config](https://github.com/hivejs/hive-config) -- loads and provides the configuration
  * [cli](https://github.com/hivejs/hive-cli) -- register your subcommands here
  * [services](https://github.com/hivejs/hive-services) -- register your services here
- * broadcast (impl. by [memory](https://github.com/hivejs/hive-broadcast-memory)) -- DuplexStream that allows FIFO broadcasting of new changes
+ * broadcast (impl. by [broadcast-memory](https://github.com/hivejs/hive-broadcast-memory)) -- DuplexStream that allows FIFO broadcasting of new changes
  * [http](https://github.com/hivejs/hive-http) -- a koa.js instance
  * [orm](https://github.com/hivejs/hive-orm) -- Sets up the orm (waterline) and emits the orm:initialize hook to allow tweaking of settings
  * [auth](https://github.com/hivejs/hive-auth) -- Allows registration of auth providers (per auth method)
@@ -85,6 +85,11 @@ while encapsuling the actual http server in a service.
  * [assets](https://github.com/hivejs/hive-assets) -- Allows registration of directories with static files and client-side components
  * [sync](https://github.com/hivejs/hive-sync) -- Manages gulf Documents
  * [auth](https://github.com/hivejs/hive-auth) -- Allows registration of authentication methods and authorization implementations
+
+### Standard client-side providers
+ * [ui](https://github.com/hivejs/hive-ui) -- kicks off everything on the client side and provides the page.js instance
+ * [ui-auth](https://github.com/hivejs/hive-ui-auth) -- allows registration of authentication methods and handles authentication
+ * [ui-editor](https://github.com/hivejs/hive-ui-editor) -- allows registration of editors for OT types and connects them to the server
 
 ### Standard services
  * [http](https://github.com/hivejs/hive-http) -- the http server
@@ -97,9 +102,11 @@ while encapsuling the actual http server in a service.
 ### Other standard components
  * [models](https://github.com/hivejs/hive-models) -- registers the built-in data models and emits models:load and models:loaded to allow addition and tweaking of models
  * [rest-api](https://github.com/hivejs/hive-models) -- registers the REST API, which is the stadard hive interface (one way to interface with hive in your app)
+ * [shoe-interface](https://github.com/hivejs/hive-shoe-interface) -- the streaming collaboration interface used by hive-ui-editor
 
 ### Libraries
- * [api-client](https://github.com/hivejs/api-client) -- a consumer of hive-rest-api, complete with [gulf](http://github.com/marcelklehr/gulf) link factory
+ * [api-client](https://github.com/hivejs/api-client) -- a consumer of hive-rest-api
+ * [shoe-client](https://github.com/hivejs/api-client) -- a consumer of hive-shoe-interface
 
 ## Architecture
 ```
