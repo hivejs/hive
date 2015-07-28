@@ -80,7 +80,6 @@ while encapsuling the actual http server in a service.
  * broadcast (impl. by [broadcast-memory](https://github.com/hivejs/hive-broadcast-memory)) -- DuplexStream that allows FIFO broadcasting of new changes
  * [http](https://github.com/hivejs/hive-http) -- a koa.js instance
  * [orm](https://github.com/hivejs/hive-orm) -- Sets up the orm (waterline) and emits the orm:initialize hook to allow tweaking of settings
- * [auth](https://github.com/hivejs/hive-auth) -- Allows registration of auth providers (per auth method)
  * [ot](https://github.com/hivejs/hive-ot) -- Allows registration of ot types
  * [assets](https://github.com/hivejs/hive-assets) -- Allows registration of directories with static files and client-side components
  * [sync](https://github.com/hivejs/hive-sync) -- Manages gulf Documents
