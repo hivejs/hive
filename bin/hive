@@ -3,7 +3,7 @@
  * This is the main hive binary
  */
 var hive = require('../')
-  , globalCommand = require('../lib/globalCommand') 
+  , globalCommand = require('../lib/globalCommand')
 
 
 var bin
@@ -15,7 +15,7 @@ if(process.argv[2] && (bin = globalCommand.exists(process.argv[2]))) {
   globalCommand.run(bin, process.argv.slice(3), function(code) {
     process.exit(code)
   })
-  
+
 
 } else {
 
