@@ -30,5 +30,5 @@
     "transformation"
   ],
   "author": "Marcel Klehr <mklehr@gmx.net>",
-  "license": "MIT"
+  "license": {"license": "GPL-3.0"}
 }
