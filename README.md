@@ -77,7 +77,7 @@ while encapsuling the actual http server in a service.
  * [config](https://github.com/hivejs/hive-config) -- loads and provides the configuration
  * [cli](https://github.com/hivejs/hive-cli) -- register your subcommands here
  * [services](https://github.com/hivejs/hive-services) -- register your services here
- * broadcast (impl. by [broadcast-memory](https://github.com/hivejs/hive-broadcast-memory)) -- DuplexStream that allows FIFO broadcasting of new changes
+ * [broadcast](https://github.com/hivejs/hive-broadcast) -- allows document-wise broadcasting of messages and new changes
  * [http](https://github.com/hivejs/hive-http) -- a koa.js instance
  * [orm](https://github.com/hivejs/hive-orm) -- Sets up the orm (waterline) and emits the orm:initialize hook to allow tweaking of settings
  * [ot](https://github.com/hivejs/hive-ot) -- Allows registration of ot types
@@ -102,6 +102,8 @@ while encapsuling the actual http server in a service.
  * [models](https://github.com/hivejs/hive-models) -- registers the built-in data models and emits models:load and models:loaded to allow addition and tweaking of models
  * [rest-api](https://github.com/hivejs/hive-models) -- registers the REST API, which is the stadard hive interface (one way to interface with hive in your app)
  * [shoe-interface](https://github.com/hivejs/hive-shoe-interface) -- the streaming collaboration interface used by hive-ui-editor
+ * [broadcast-memory](https://github.com/hivejs/hive-broadcast-memory) -- broadcast transport stub for when you have only one worker
+ * [broadcast-smokesignal](https://github.com/hivejs/hive-broadcast-smokesignal) -- broadcast transport via [smokesignal](https://github.com/marcelklehr/smokesignal) p2p network
 
 ### Libraries
  * [api-client](https://github.com/hivejs/api-client) -- a consumer of hive-rest-api
