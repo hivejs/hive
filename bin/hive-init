@@ -47,16 +47,26 @@ co(function *() {
   , version: '0.0.0'
   , description: yield prompt(indent+'Instance description: ')
   , dependencies: {
-      'hive-config': '*'
+      'hive-assets': '*'
+    , 'hive-auth': '*'
+    , 'broadcast': '*'
+    , 'hive-broadcast-memory': '*'
     , 'hive-cli': '*'
+    , 'hive-config': '*'
     , 'hive-hooks': '*'
-    , 'hive-services': '*'
-    , 'hive-worker-pool': '*'
-    , 'hive-worker': '*'
-    , 'hive-orm': '*'
-    , 'hive-models': '*'
     , 'hive-http': '*'
+    , 'hive-logger': '*'
+    , 'hive-models': '*'
+    , 'hive-orm': '*'
+    , 'hive-ot': '*'
+    , 'hive-queue': '*'
     , 'hive-rest-api': '*'
+    , 'hive-services': '*'
+    , 'hive-shoe-interface': '*'
+    , 'hive-sync': '*'
+    , 'hive-ui': '*'
+    , 'hive-ui-auth': '*'
+    , 'hive-ui-editor': '*'
     }
   , private: true
   , hive: true
