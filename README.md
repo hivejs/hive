@@ -141,6 +141,14 @@ A component can register files to be loaded by the client-side loader with the `
  * what about metrics? node-measured, https://github.com/square/cube , might make sense to abstract all this in a stats collecting provider
 
 
+## Client-side module exposure: page.js context vs. architect
+There is some redundancy between exposing a module as a client-side provider (an architect service) and exposing it via page.js's context object. This section's purpose is to clarify when to use what:
+
+### Client-side providers
+If your module has value beyond the scope of a single page, then you should expose it as a client-side provider. This was done, for example, with `hive-ui-auth`, which is used by `hive-ui-editor`, however there might be various other instances where authentication is necessary, therefore it is exposed as a provider.
+
+### Page.js's context
+If your module is tailored for a particular page and specifically depends on some features of that page, as is the case with the document page (`/:id`), and you can't think of a reason why anyone would need it on a different page, then you should expose it on page.js's context object. If however some core concept of your module does seem to be useful in other contexts, you might want to think about exposing this part as a provider while still adding it to the desired context or even outsourcing it entirely and depdening on it in a separate more specifc module that adds it to the desired context.
 
 
 ## Provider interfaces, delegators, the hooks provider -- when to use what?
