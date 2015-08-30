@@ -49,7 +49,7 @@ co(function *() {
   , dependencies: {
       'hive-assets': '*'
     , 'hive-auth': '*'
-    , 'broadcast': '*'
+    , 'hive-broadcast': '*'
     , 'hive-broadcast-memory': '*'
     , 'hive-cli': '*'
     , 'hive-config': '*'
@@ -111,10 +111,12 @@ co(function *() {
 
 
   console.log('\nMission complete.')
-})(function(er) {
-  if(er) throw er;
-  process.exit()
-})
+}).then(
+  function() {process.exit()},
+  function(er) {
+    throw er;
+  }
+)
 
 function spawn(cmd, args, opts) {
   return function(cb) {
