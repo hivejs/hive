@@ -68,6 +68,8 @@ co(function *() {
     , 'hive-ui-auth': '*'
     , 'hive-ui-editor': '*'
     , 'hive-ui-models': '*'
+    , 'gulf': '2.x'
+    , 'architect': '0.1.x'
     }
   , private: true
   , hive: true
