@@ -44,7 +44,7 @@ co(function *() {
 
   var packageJson = {
     name: yield prompt(indent+'Instance name: ')
-  , version: '0.0.0'
+  , version: '0.1.0'
   , description: yield prompt(indent+'Instance description: ')
   , dependencies: {
       'hive-assets': '*'
@@ -55,18 +55,19 @@ co(function *() {
     , 'hive-config': '*'
     , 'hive-hooks': '*'
     , 'hive-http': '*'
+    , 'hive-interface-rest-api': '*'
+    , 'hive-interface-shoe': '*'
     , 'hive-logger': '*'
     , 'hive-models': '*'
     , 'hive-orm': '*'
     , 'hive-ot': '*'
     , 'hive-queue': '*'
-    , 'hive-rest-api': '*'
     , 'hive-services': '*'
-    , 'hive-shoe-interface': '*'
     , 'hive-sync': '*'
     , 'hive-ui': '*'
     , 'hive-ui-auth': '*'
     , 'hive-ui-editor': '*'
+    , 'hive-ui-models': '*'
     }
   , private: true
   , hive: true
