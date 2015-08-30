@@ -49,6 +49,7 @@ co(function *() {
   , dependencies: {
       'hive-assets': '*'
     , 'hive-auth': '*'
+    , 'hive-auth-token':'*'
     , 'hive-broadcast': '*'
     , 'hive-broadcast-memory': '*'
     , 'hive-cli': '*'
