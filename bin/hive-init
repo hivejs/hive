@@ -60,6 +60,7 @@ co(function *() {
     , 'hive-interface-shoe': '*'
     , 'hive-logger': '*'
     , 'hive-models': '*'
+    , 'hive-oauth-provider': '*'
     , 'hive-orm': '*'
     , 'hive-ot': '*'
     , 'hive-queue': '*'
