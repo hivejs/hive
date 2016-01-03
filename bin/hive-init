@@ -43,12 +43,11 @@ co(function *() {
   console.log('\n1) Create package.json')
 
   var packageJson = {
-    name: yield prompt(indent+'Instance name: ')
+    name: 'Hive.js'
   , version: '0.1.0'
   , description: yield prompt(indent+'Instance description: ')
   , dependencies: {
-      'hive-assets': '*'
-    , 'hive-auth': '*'
+      'hive-auth': '*'
     , 'hive-auth-token':'*'
     , 'hive-broadcast': '*'
     , 'hive-broadcast-memory': '*'
@@ -67,9 +66,9 @@ co(function *() {
     , 'hive-services': '*'
     , 'hive-sync': '*'
     , 'hive-ui': '*'
-    , 'hive-ui-auth': '*'
+    , 'hive-ui-session': '*'
     , 'hive-ui-editor': '*'
-    , 'hive-ui-models': '*'
+    , 'hive-ui-api': '*'
     , 'gulf': '3.x'
     , 'architect': '0.1.x'
     }
