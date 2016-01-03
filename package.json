@@ -7,7 +7,8 @@
     "architect": "*",
     "co": "*",
     "co-prompt": "*",
-    "win-fork": "*"
+    "win-fork": "*",
+    "chosen": "0.0.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

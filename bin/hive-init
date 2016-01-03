@@ -24,6 +24,7 @@
 
 var co = require('co')
   , prompt = require('co-prompt')
+  , choose = require("chosen").choose
   , fs = require('fs')
   , winFork = require('win-fork')
 
@@ -42,36 +43,102 @@ co(function *() {
 
   console.log('\n1) Create package.json')
 
+  var deps = {
+    'hive-auth': '*'
+  , 'hive-auth-token':'*'
+  , 'hive-broadcast': '*'
+  , 'hive-cli': '*'
+  , 'hive-config': '*'
+  , 'hive-hooks': '*'
+  , 'hive-http': '*'
+  , 'hive-interface-rest-api': '*'
+  , 'hive-interface-shoe': '*'
+  , 'hive-logger': '*'
+  , 'hive-models': '*'
+  , 'hive-oauth-provider': '*'
+  , 'hive-orm': '*'
+  , 'hive-ot': '*'
+  , 'hive-queue': '*'
+  , 'hive-services': '*'
+  , 'hive-sync': '*'
+  , 'hive-ui': '*'
+  , 'hive-ui-session': '*'
+  , 'hive-ui-editor': '*'
+  , 'hive-ui-api': '*'
+  , 'gulf': '3.x'
+  , 'architect': '0.1.x'
+  }
+
+  console.log('Choose one of the following database adapters:')
+  var db = yield function(cb) {
+    choose([
+      'sails-postgresql'
+    , 'sails-mysql'
+    , 'sails-mongo'
+    , 'sails-redis'
+    , 'sails-disk'
+    , 'sails-memory'
+    ]
+    , function(answer){
+      cb(null, answer)
+    })
+  }
+  deps[db] = '*'
+
+  var dbConfigTemplates = {
+    'sails-postgresql': {
+      database: 'databaseName',
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      port: 5432,
+      poolSize: 10,
+      ssl: false
+    },
+    'sails-mysql': {
+      host      : 'localhost',
+      port      : 3306,
+      user      : 'username',
+      password  : 'password',
+      database  : 'MySQL Database Name'
+    },
+    'sails-mongo': {
+      host: 'localhost',
+      port: 27017,
+      user: 'username_here',
+      password: 'password_here',
+      database: 'database_name_here'
+    },
+    'sails-redis': {
+      port: 6379,
+      host: 'localhost',
+      password: null,
+      database: null
+    },
+    'sails-disk': null,
+    'sails-memory': null
+  }
+
+  var dbConfig = dbConfigTemplates[db]
+  dbConfig.adapter = db
+
+  console.log('Choose one of the following broadcast transports:')
+  var broadcast = yield function(cb) {
+    choose([
+      'hive-broadcast-memory'
+    , 'hive-broadcast-smokesignal'
+    ]
+    , function(answer){
+      cb(null, answer)
+    })
+  }
+  deps[broadcast] = '*'
+
   var packageJson = {
     name: 'Hive.js'
   , version: '0.1.0'
-  , description: yield prompt(indent+'Instance description: ')
-  , dependencies: {
-      'hive-auth': '*'
-    , 'hive-auth-token':'*'
-    , 'hive-broadcast': '*'
-    , 'hive-broadcast-memory': '*'
-    , 'hive-cli': '*'
-    , 'hive-config': '*'
-    , 'hive-hooks': '*'
-    , 'hive-http': '*'
-    , 'hive-interface-rest-api': '*'
-    , 'hive-interface-shoe': '*'
-    , 'hive-logger': '*'
-    , 'hive-models': '*'
-    , 'hive-oauth-provider': '*'
-    , 'hive-orm': '*'
-    , 'hive-ot': '*'
-    , 'hive-queue': '*'
-    , 'hive-services': '*'
-    , 'hive-sync': '*'
-    , 'hive-ui': '*'
-    , 'hive-ui-session': '*'
-    , 'hive-ui-editor': '*'
-    , 'hive-ui-api': '*'
-    , 'gulf': '3.x'
-    , 'architect': '0.1.x'
-    }
+  , description: 'Your hive.js instance'
+  , dependencies: deps
   , private: true
   , hive: true
   }
@@ -102,11 +169,46 @@ co(function *() {
 
   console.log('\n3) Set up config files')
 
+  var config = {
+    ui: {
+      baseURL: 'https://localhost:1235'
+    },
+    http: {
+      port: 1235
+    },
+    orm: {
+      adapters: [db]
+    , connections: {default: dbConfig}
+    },
+    'auth-token': {
+      secret: 'sssh'
+    },
+    queue: {
+      port: 12351
+    , address: "127.0.0.1"
+    },
+    logger: {
+      appenders: [
+        { type: "console" }
+      ]
+    }
+  }
+
+  if(broadcast === 'hive-broadcast-smokesignal') {
+    config['broadcast-smokesignal'] = {
+      "networkMask": "192.168.2.1/255.255.255.0"
+    , "port": 12352
+    , "seeds": [
+        {"address":"192.168.2.100", "port":12352}
+      ]
+    }
+  }
+
   var configdir = process.cwd()+'/config'
   fs.mkdirSync(configdir)
   ;['development', 'test', 'production']
     .forEach(function(env) {
-      fs.writeFileSync(configdir+'/'+env+'.json', '{\n}')
+      fs.writeFileSync(configdir+'/'+env+'.json', JSON.stringify(config, null, '  ')
       console.log(indent+'- config/'+env+'.json')
     })
 
