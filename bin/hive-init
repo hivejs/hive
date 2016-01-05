@@ -23,205 +23,275 @@
  */
 
 var co = require('co')
-  , prompt = require('co-prompt')
-  , choose = require("chosen").choose
+  , inquirer = require("inquirer")
   , fs = require('fs')
   , winFork = require('win-fork')
+
+var deps = {
+  'hive-auth': '*'
+, 'hive-auth-token':'*'
+, 'hive-broadcast': '*'
+, 'hive-cli': '*'
+, 'hive-config': '*'
+, 'hive-hooks': '*'
+, 'hive-http': '*'
+, 'hive-interface-rest-api': '*'
+, 'hive-interface-shoe': '*'
+, 'hive-logger': '*'
+, 'hive-models': '*'
+, 'hive-oauth-provider': '*'
+, 'hive-orm': '*'
+, 'hive-ot': '*'
+, 'hive-queue': '*'
+, 'hive-services': '*'
+, 'hive-sync': '*'
+, 'hive-ui': '*'
+, 'hive-ui-session': '*'
+, 'hive-ui-editor': '*'
+, 'hive-ui-api': '*'
+, 'gulf': '3.x'
+, 'architect': '0.1.x'
+}
+
+var dbConfigTemplates = {
+  'sails-postgresql': {
+    database: 'databaseName',
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    port: 5432,
+    poolSize: 10,
+    ssl: false
+  },
+  'sails-mysql': {
+    host      : 'localhost',
+    port      : 3306,
+    user      : 'username',
+    password  : 'password',
+    database  : 'MySQL Database Name'
+  },
+  'sails-mongo': {
+    host: 'localhost',
+    port: 27017,
+    user: 'username_here',
+    password: 'password_here',
+    database: 'database_name_here'
+  },
+  'sails-redis': {
+    port: 6379,
+    host: 'localhost',
+    password: null,
+    database: null
+  },
+  'sails-disk': null,
+  'sails-memory': null
+}
 
 co(function *() {
   var indent = '  '
 
-  if(isExistingInstance()) {
-    console.log('There is already a hive instance in this directory.')
+  if(isExistingInstance() && !(yield confirm('There is already a hive instance in this directory. Continue anyway?'))) {
+    console.log('Aborting.')
     return
   }
 
 
-  console.log('Mission: Set up your hive instance.')
-  console.log('Details: 1) Create package.json, 2) Install hive components, 3) Set up config files.')
+  console.log('Set up your hive instance. The following steps will be taken:')
+  console.log('0) Your choices 1) Create package.json, 2) Install hive components, 3) Set up config files.')
 
 
-  console.log('\n1) Create package.json')
 
-  var deps = {
-    'hive-auth': '*'
-  , 'hive-auth-token':'*'
-  , 'hive-broadcast': '*'
-  , 'hive-cli': '*'
-  , 'hive-config': '*'
-  , 'hive-hooks': '*'
-  , 'hive-http': '*'
-  , 'hive-interface-rest-api': '*'
-  , 'hive-interface-shoe': '*'
-  , 'hive-logger': '*'
-  , 'hive-models': '*'
-  , 'hive-oauth-provider': '*'
-  , 'hive-orm': '*'
-  , 'hive-ot': '*'
-  , 'hive-queue': '*'
-  , 'hive-services': '*'
-  , 'hive-sync': '*'
-  , 'hive-ui': '*'
-  , 'hive-ui-session': '*'
-  , 'hive-ui-editor': '*'
-  , 'hive-ui-api': '*'
-  , 'gulf': '3.x'
-  , 'architect': '0.1.x'
-  }
+console.log('\n0) Enter your choices for the new hive instance')
 
-  console.log('Choose one of the following database adapters:')
-  var db = yield function(cb) {
-    choose([
-      'sails-postgresql'
-    , 'sails-mysql'
-    , 'sails-mongo'
-    , 'sails-redis'
-    , 'sails-disk'
-    , 'sails-memory'
-    ]
-    , function(answer){
-      cb(null, answer)
-    })
-  }
+  var db = yield select('Choose a database adapter',
+  [ 'sails-postgresql'
+  , 'sails-mysql'
+  , 'sails-mongo'
+  , 'sails-redis'
+  , 'sails-disk'
+  , 'sails-memory'
+  ])
   deps[db] = '*'
 
-  var dbConfigTemplates = {
-    'sails-postgresql': {
-      database: 'databaseName',
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      port: 5432,
-      poolSize: 10,
-      ssl: false
-    },
-    'sails-mysql': {
-      host      : 'localhost',
-      port      : 3306,
-      user      : 'username',
-      password  : 'password',
-      database  : 'MySQL Database Name'
-    },
-    'sails-mongo': {
-      host: 'localhost',
-      port: 27017,
-      user: 'username_here',
-      password: 'password_here',
-      database: 'database_name_here'
-    },
-    'sails-redis': {
-      port: 6379,
-      host: 'localhost',
-      password: null,
-      database: null
-    },
-    'sails-disk': null,
-    'sails-memory': null
-  }
-
   var dbConfig = dbConfigTemplates[db]
+  for(var key in dbConfig) {
+    dbConfig[key] = yield input('Enter '+key, dbConfig[key])
+  }
   dbConfig.adapter = db
 
-  console.log('Choose one of the following broadcast transports:')
-  var broadcast = yield function(cb) {
-    choose([
-      'hive-broadcast-memory'
-    , 'hive-broadcast-smokesignal'
-    ]
-    , function(answer){
-      cb(null, answer)
-    })
-  }
+  var broadcast = yield select('Choose a broadcast transport', [
+    'hive-broadcast-memory'
+  , 'hive-broadcast-smokesignal'
+  ])
   deps[broadcast] = '*'
 
-  var packageJson = {
-    name: 'Hive.js'
-  , version: '0.1.0'
-  , description: 'Your hive.js instance'
-  , dependencies: deps
-  , private: true
-  , hive: true
-  }
-
-  console.log(indent+'Writing package.json...')
-  fs.writeFileSync(process.cwd()+'/package.json', JSON.stringify(packageJson, null, '  '))
-
-  console.log(indent+'✔')
-
-
-  console.log('\n2) Install hive components')
-
-  console.log(indent+'installing the following components...\n', packageJson.dependencies)
-
-  var exitCode = yield spawn('npm', ['update', '--loglevel=warn'], {
-    stdio: 'inherit'
-  , cwd: process.cwd()
-  , env: process.env
-  , detached: false
+  var editors = yield multipleChoice('Choose the editors you want to install',[
+    'hive-editor-text-textarea'
+  , 'hive-editor-text-codemirror'
+  , 'hive-editor-html-ckeditor'
+  , 'hive-editor-svg-method-draw'
+  ])
+  editors.forEach(function(editor) {
+    deps[editor] = '*'
   })
 
-  if(exitCode != 0) {
-    console.log('\n'+indent+'Mh. npm seems to have failed. You\'ll have to install the components yourself.')
-  }else {
+
+
+
+console.log('\n1) Create package.json')
+
+  if(yield confirm('Should I write package.json?')) {
+    var packageJson = {
+      name: 'Hive.js'
+    , version: '0.1.0'
+    , description: 'Your hive.js instance'
+    , dependencies: deps
+    , private: true
+    , hive: true
+    }
+
+    console.log(indent+'Writing package.json...')
+    fs.writeFileSync(process.cwd()+'/package.json', JSON.stringify(packageJson, null, '  '))
+
     console.log(indent+'✔')
   }
 
 
-  console.log('\n3) Set up config files')
+  console.log('\n2) Install hive components')
 
-  var config = {
-    ui: {
-      baseURL: 'https://localhost:1235'
-    },
-    http: {
-      port: 1235
-    },
-    orm: {
-      adapters: [db]
-    , connections: {default: dbConfig}
-    },
-    'auth-token': {
-      secret: 'sssh'
-    },
-    queue: {
-      port: 12351
-    , address: "127.0.0.1"
-    },
-    logger: {
-      appenders: [
-        { type: "console" }
-      ]
-    }
-  }
+  if(yield confirm('Should I install the necessary hive components?')) {
+    console.log(indent+'installing the following components...\n', packageJson.dependencies)
 
-  if(broadcast === 'hive-broadcast-smokesignal') {
-    config['broadcast-smokesignal'] = {
-      "networkMask": "192.168.2.1/255.255.255.0"
-    , "port": 12352
-    , "seeds": [
-        {"address":"192.168.2.100", "port":12352}
-      ]
-    }
-  }
-
-  var configdir = process.cwd()+'/config'
-  fs.mkdirSync(configdir)
-  ;['development', 'test', 'production']
-    .forEach(function(env) {
-      fs.writeFileSync(configdir+'/'+env+'.json', JSON.stringify(config, null, '  ')
-      console.log(indent+'- config/'+env+'.json')
+    var exitCode = yield spawn('npm', ['update', '--loglevel=warn'], {
+      stdio: 'inherit'
+    , cwd: process.cwd()
+    , env: process.env
+    , detached: false
     })
 
-  console.log(indent+'✔')
+    if(exitCode != 0) {
+      console.log('\n'+indent+'Mh. npm seems to have failed. You\'ll have to install the components yourself.')
+    }else {
+      console.log(indent+'✔')
+    }
+  }
+
+
+
+console.log('\n3) Set up config files')
+
+  if(yield confirm('Should I write the configuration files?')) {
+
+    var config = {
+      ui: {
+        baseURL: 'https://localhost:1235'
+      },
+      http: {
+        port: 1235
+      },
+      orm: {
+        adapters: [db]
+      , connections: {default: dbConfig}
+      },
+      'auth-token': {
+        secret: 'sssh'
+      },
+      queue: {
+        port: 12351
+      , address: "127.0.0.1"
+      },
+      logger: {
+        appenders: [
+          { type: "console" }
+        ]
+      }
+    }
+
+    if(broadcast === 'hive-broadcast-smokesignal') {
+      config['broadcast-smokesignal'] = {
+        "networkMask": "192.168.2.1/255.255.255.0"
+      , "port": 12352
+      , "seeds": [
+          {"address":"192.168.2.100", "port":12352}
+        ]
+      }
+    }
+
+    var configdir = process.cwd()+'/config'
+    fs.mkdirSync(configdir)
+    ;['development', 'test', 'production']
+      .forEach(function(env) {
+        fs.writeFileSync(configdir+'/'+env+'.json', JSON.stringify(config, null, '  '))
+        console.log(indent+'- config/'+env+'.json')
+      })
+
+    console.log(indent+'✔')
+
+  }
 
 
   console.log('\nMission complete.')
-}).then(
-  function() {process.exit()},
-  function(er) {
-    throw er;
+})
+.then(function() {process.exit()})
+.catch(function(er) {
+  throw er;
+})
+
+function confirm(message) {
+  return function(cb) {
+    inquirer.prompt([
+      { type: 'confirm'
+      , name: 'mylist'
+      , message: message
+      , 'default': true
+      }
+    ], function(answers) {
+      cb(null, answers.mylist)
+    })
   }
-)
+}
+
+function input(message, defaultVal) {
+  return function(cb) {
+    inquirer.prompt([
+      { type: 'input'
+      , name: 'mylist'
+      , message: message
+      , 'default': defaultVal
+      }
+    ], function(answers) {
+      cb(null, answers.mylist)
+    })
+  }
+}
+
+function select(message, list) {
+  return function(cb) {
+    inquirer.prompt([
+      { type: 'list'
+      , name: 'mylist'
+      , message: message
+      , choices: list
+      }
+    ], function(answers) {
+      cb(null, answers.mylist)
+    })
+  }
+}
+
+function multipleChoice(message, list) {
+  return function(cb) {
+    inquirer.prompt([
+      { type: 'checkbox'
+      , name: 'mylist'
+      , message: message
+      , choices: list
+      }
+    ], function(answers) {
+      cb(null, answers.mylist)
+    })
+  }
+}
 
 function spawn(cmd, args, opts) {
   return function(cb) {

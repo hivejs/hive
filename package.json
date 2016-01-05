@@ -6,9 +6,8 @@
   "dependencies": {
     "architect": "*",
     "co": "*",
-    "co-prompt": "*",
     "win-fork": "*",
-    "chosen": "0.0.2"
+    "inquirer": "0.11.x"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
