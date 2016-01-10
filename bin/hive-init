@@ -193,7 +193,7 @@ console.log('\n3) Set up config files')
         adapters: [db]
       , connections: {default: dbConfig}
       },
-      'auth-token': {
+      authToken: {
         secret: 'sssh'
       },
       queue: {
