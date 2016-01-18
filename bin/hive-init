@@ -45,10 +45,13 @@ var deps = {
 , 'hive-queue': '*'
 , 'hive-services': '*'
 , 'hive-sync': '*'
+, 'hive-importexport': '*'
 , 'hive-ui': '*'
 , 'hive-ui-session': '*'
 , 'hive-ui-editor': '*'
 , 'hive-ui-api': '*'
+, 'hive-ui-settings': '*'
+, 'hive-ui-importexport': '*'
 , 'gulf': '3.x'
 , 'architect': '0.1.x'
 }
@@ -83,8 +86,8 @@ var dbConfigTemplates = {
     password: null,
     database: null
   },
-  'sails-disk': null,
-  'sails-memory': null
+  'sails-disk': {},
+  'sails-memory': {}
 }
 
 co(function *() {
