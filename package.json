@@ -1,5 +1,5 @@
 {
-  "name": "hivejs",
+  "name": "hive",
   "version": "0.6.0",
   "description": "Collaborating: Snap.",
   "main": "index.js",
@@ -32,5 +32,13 @@
   "author": "Marcel Klehr <mklehr@gmx.net>",
   "license": {
     "license": "GPL-3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hivejs/hive.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hivejs/hive/issues"
+  },
+  "homepage": "https://github.com/hivejs/hive"
 }
