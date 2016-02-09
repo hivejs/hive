@@ -29,10 +29,11 @@ var co = require('co')
 
 var deps = {
   'hive-core': '0.6.x'
-, 'hive-auth-token':'0.6.x'
 , 'hive-interface-rest-api': '0.6.x'
 , 'hive-interface-shoe': '0.6.x'
 , 'hive-ui': '0.6.x'
+, 'hive-plugin-import': '0.7.x'
+, 'hive-plugin-export': '0.7.x'
 , 'gulf': '4.x'
 , 'architect': '0.1.x'
 }
