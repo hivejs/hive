@@ -206,9 +206,12 @@ console.log('\n3) Set up config files')
     fs.mkdirSync(configdir)
     ;['development', 'test', 'production']
       .forEach(function(env) {
-        fs.writeFileSync(configdir+'/'+env+'.json', JSON.stringify(config, null, '  '))
+        fs.writeFileSync(configdir+'/'+env+'.json', JSON.stringify({}, null, '  '))
         console.log(indent+'- config/'+env+'.json')
       })
+
+    fs.writeFileSync(configdir+'/default.json', JSON.stringify(config, null, '  '))
+    console.log(indent+'- config/default.json')
 
     console.log(indent+'✔')
 
