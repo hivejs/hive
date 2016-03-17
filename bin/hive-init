@@ -170,6 +170,7 @@ console.log('\n3) Set up config files')
     var config = {
       ui: {
         baseURL: 'http://localhost:1235'
+      , debug: false
       },
       http: {
         port: 1235
