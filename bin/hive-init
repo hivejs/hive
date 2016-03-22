@@ -28,10 +28,10 @@ var co = require('co')
   , winFork = require('win-fork')
 
 var deps = {
-  'hive-core': '0.6.x'
-, 'hive-interface-rest-api': '0.6.x'
+  'hive-core': '0.7.x'
+, 'hive-interface-rest-api': '0.7.x'
 , 'hive-interface-shoe': '0.6.x'
-, 'hive-ui': '0.6.x'
+, 'hive-ui': '0.7.x'
 , 'hive-plugin-import': '0.7.x'
 , 'hive-plugin-export': '0.7.x'
 , 'gulf': '4.x'
