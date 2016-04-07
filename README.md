@@ -1,5 +1,15 @@
 # hive.js
-This is the main module of [Hive.js](http://hivejs.org).
+This is the kick-off module of [Hive.js](http://hivejs.org).
+
+Hive.js is a real-time collaboration platform. It supports multiple document types and editors, features unopinionated authentication and authorization, is scalable (you can spin up several workers and things won't break), is integratable through a rich RESTful API and a websocket-based interface, with support for adding additional interfaces.
+
+See the [Roadmap](https://github.com/hivejs/hive/wiki/Roadmap) and [the issues](https://github.com/hivejs/hive/issues) for planned features.
+The [wiki](https://github.com/hivejs/hive/wiki) is intended to familiarize new developers with the code base (This is on the to-do).
+A less exhaustive, but more structured source of information are the [official docs](http://docs.hivejs.org).
+Check [the blog](http://blog.hivejs.org) and [the mailing list](://groups.google.com/d/forum/hivejs) from time to time.
+There's an IRC channel on freenode.net: [#hive.js](http://webchat.freenode.net/?channels=#hive.js)
+And there's a [gitter chat room](https://gitter.im/hivejs/chat).
+You can also send a mail directly to [Marcel Klehr](https://github.com/marcelklehr), if you want a quick reply.
 
 ## The hive module
 
