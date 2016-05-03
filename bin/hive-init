@@ -30,10 +30,11 @@ var co = require('co')
 var deps = {
   'hive-core': '0.7.x'
 , 'hive-interface-rest-api': '0.7.x'
-, 'hive-interface-shoe': '0.6.x'
+, 'hive-interface-stream': '0.6.x'
+, 'engine.io': '1.x'
 , 'hive-ui': '0.7.x'
-, 'hive-plugin-import': '0.7.x'
-, 'hive-plugin-export': '0.7.x'
+, 'hive-plugin-import': '0.2.x'
+, 'hive-plugin-export': '0.2.x'
 , 'gulf': '4.x'
 , 'architect': '0.1.x'
 }
@@ -174,6 +175,9 @@ console.log('\n3) Set up config files')
       },
       http: {
         port: 1235
+      },
+      interfaceStream: {
+        transport: 'engine.io'
       },
       orm: {
         adapters: [db]
