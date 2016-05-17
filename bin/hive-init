@@ -27,15 +27,12 @@ var co = require('co')
   , winFork = require('win-fork')
 
 var deps = {
-  'hive-core': '0.7.x'
-, 'hive-interface-rest-api': '0.7.x'
-, 'hive-interface-stream': '0.6.x'
+  'hive-core': '0.8.x'
+, 'hive-interface-rest-api': '0.8.x'
+, 'hive-interface-stream': '0.8.x'
 , 'engine.io': '1.x'
-, 'hive-ui': '0.7.x'
-, 'hive-plugin-import': '0.2.x'
-, 'hive-plugin-export': '0.2.x'
+, 'hive-ui': '0.8.x'
 , 'gulf': '4.x'
-, 'architect': '0.1.x'
 }
 
 var dbConfigTemplates = {
