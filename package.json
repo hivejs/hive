@@ -1,6 +1,6 @@
 {
   "name": "hive",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Collaborating: Snap.",
   "main": "index.js",
   "dependencies": {
