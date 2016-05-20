@@ -72,7 +72,9 @@ var dbConfigTemplates = {
 co(function *() {
   var indent = '  '
 
-  if(isExistingInstance() && !(yield confirm('There is already a hive instance in this directory. Continue anyway?'))) {
+  const firstRun = !isExistingInstance()
+
+  if(!firstRun && !(yield confirm('There is already a hive instance in this directory. Continue anyway?'))) {
     console.log('Aborting.')
     return
   }
@@ -122,7 +124,7 @@ console.log('\n0) Enter your choices for the new hive instance')
 
 console.log('\n1) Create package.json')
 
-  if(!isExistingInstance() || (yield confirm('Should I write package.json?'))) {
+  if(firstRun || (yield confirm('Should I write package.json?'))) {
     var packageJson = {
       name: 'Hive.js'
     , version: '0.1.0'
@@ -142,7 +144,7 @@ console.log('\n1) Create package.json')
 
 console.log('\n2) Set up config files')
 
-  if(!isExistingInstance() || (yield confirm('Should I write the configuration files?'))) {
+  if(firstRun || (yield confirm('Should I write the configuration files?'))) {
 
     var config = {
       ui: {
@@ -201,7 +203,7 @@ console.log('\n2) Set up config files')
 
   console.log('\n3) Install hive components')
 
-  if(!isExistingInstance() || (yield confirm('Should I install the necessary hive components?'))) {
+  if(firstRun || (yield confirm('Should I install the necessary hive components?'))) {
     console.log(indent+'installing the following components...\n', packageJson.dependencies)
 
     var exitCode = yield spawn('npm', ['update', '--loglevel=warn'], {
