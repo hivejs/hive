@@ -162,7 +162,7 @@ console.log('\n2) Set up config files')
       , connections: {default: dbConfig}
       },
       authToken: {
-        secret: 'sssh'
+        secret: createRandomString(120)
       },
       queue: {
         port: 12351
@@ -303,4 +303,12 @@ function isExistingInstance() {
   }catch(e) {
     return false
   }
+}
+
+function createRandomString(n) {
+  var str = ''
+  while(str.length < n) {
+    str += (Math.random()*10e6).toString(36)
+  }
+  return str
 }
