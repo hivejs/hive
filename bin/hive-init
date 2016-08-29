@@ -148,7 +148,7 @@ console.log('\n2) Set up config files')
 
     var config = {
       ui: {
-        baseURL: 'http://localhost:1235'
+        baseURL: yield input('Enter the base url of your instance (what users will type in the address bar of their browser)', 'http://localhost:1235')
       , debug: false
       },
       http: {
